@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import Form from '../components/form'
-import { VALIDATE_FORM, UPDATE_FROM, UPDATE_TO } from '../actions/index'
+import { FETCH_ROUTES, UPDATE_FROM, UPDATE_TO } from '../actions/index'
 
 
 const mapStateToProps = (state) => {
@@ -11,9 +11,9 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    submitAction: ()  => dispatch(VALIDATE_FORM('QWE', 'RTY')),
+    submitAction: (from, to)  => dispatch(FETCH_ROUTES(from, to)),
     updateFrom:   (e) => dispatch(UPDATE_FROM(e.target.value)),
     updateTo:     (e) => dispatch(UPDATE_TO(e.target.value))
   }

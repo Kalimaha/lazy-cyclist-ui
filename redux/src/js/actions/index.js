@@ -1,10 +1,4 @@
-export const VALIDATE_FORM = (from, to) => {
-  return {
-    type: 'VALIDATE_FORM',
-    from: from,
-    to: to
-  }
-}
+import { routes } from '../repositories/lazy_cyclist'
 
 export const UPDATE_FROM = (from) => {
   return {
@@ -18,4 +12,25 @@ export const UPDATE_TO = (to) => {
     type: 'UPDATE_TO',
     to: to
   }
+}
+
+export const FETCH_ROUTES = (from, to) => dispatch => {
+  dispatch({
+    type: 'FETCH_ROUTES_REQUEST',
+    from: from,
+    to: to
+  })
+
+  routes(from, to).then(
+    (response)  => {
+      dispatch({
+        type: 'FETCH_ROUTES_SUCCESS',
+        response
+      })
+    },
+    (errors)    => dispatch({
+      type:   'FETCH_ROUTES_FAILURE',
+      errors: errors.statusText
+    })
+  )
 }
