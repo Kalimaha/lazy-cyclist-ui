@@ -8,9 +8,17 @@ const ElevationPoints = () => (
       </label>
     </div>
     <div className="col-lg-12">
-    <label className="radio-inline"><input type="radio" name="optradio" defaultChecked=""/>0</label>
-    <label className="radio-inline"><input type="radio" name="optradio" defaultChecked="checked"/>1</label>
-    <label className="radio-inline"><input type="radio" name="optradio" defaultChecked=""/>2</label>
+      <div className="btn-group" data-toggle="buttons" style={{width: "100%"}}>
+        <label className="btn btn-default active">
+          <input type="radio" name="optradio" defaultChecked=""/>0
+        </label>
+        <label className="btn btn-default">
+          <input type="radio" name="optradio" defaultChecked=""/>1
+        </label>
+        <label className="btn btn-default">
+          <input type="radio" name="optradio" defaultChecked="checked"/>2
+        </label>
+      </div>
     </div>
   </div>
 )

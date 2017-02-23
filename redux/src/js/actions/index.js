@@ -29,8 +29,8 @@ export const FETCH_ROUTES = (from, to) => dispatch => {
       })
     },
     (errors)    => dispatch({
-      type: 'FETCH_ROUTES_FAILURE',
-      errors
+      type:   'FETCH_ROUTES_FAILURE',
+      errors: errors.statusText
     })
   )
 }
