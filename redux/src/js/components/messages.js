@@ -1,14 +1,9 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
 
-
-const Messages = ({ message, className }) => (
-  <div className={className}>
+const Messages = ({ message, style }) => (
+  <div className="alert alert-danger" style={style}>
     {message}
   </div>
 )
-
-Messages.propTypes = {
-  message: PropTypes.string.isRequired
-}
 
 export default Messages

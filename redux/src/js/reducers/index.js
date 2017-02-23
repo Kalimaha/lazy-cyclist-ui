@@ -2,7 +2,9 @@ const initial_state = {
   from:     'Federation Square, Melbourne, Australia',
   to:       '511 Church St, Melbourne, Australia',
   valid:    true,
-  message:  'Valid selection.'
+  message:  'Valid selection.',
+  is_fetching: false,
+  routes: []
 }
 
 const is_valid  = (from, to)  => (from.length > 0 && to.length > 0)
@@ -11,11 +13,6 @@ const message   = (valid)     => valid  ? 'Valid selection.'
 
 const Reducer = (state = initial_state, action) => {
   switch (action.type) {
-    case 'VALIDATE_FORM':
-      if (state.valid)  { alert('valid request') }
-      else              { alert('nope') }
-
-      return initial_state
     case 'UPDATE_FROM':
       return Object.assign({}, state, {
         from:     action.from,
@@ -27,6 +24,20 @@ const Reducer = (state = initial_state, action) => {
         to:       action.to,
         valid:    is_valid(state.from, action.to),
         message:  message(is_valid(state.from, action.to))
+      })
+    case 'FETCH_ROUTES_REQUEST':
+      return Object.assign({}, state, {
+        is_fetching: true
+      })
+    case 'FETCH_ROUTES_SUCCESS':
+      return Object.assign({}, state, {
+        is_fetching: false,
+        routes: JSON.parse(action.response)
+      })
+    case 'FETCH_ROUTES_FAILURE':
+      return Object.assign({}, state, {
+        is_fetching: false,
+        routes: action.errors
       })
     default:
       return state

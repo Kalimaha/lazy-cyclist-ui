@@ -1,12 +1,12 @@
 import { connect } from 'react-redux'
 import Messages from '../components/messages'
 
-const messageClassName = (valid) => valid ? 'alert alert-success' : 'alert alert-danger'
+const messageClassName = (valid) => valid ? { display: 'none' } : { display: 'block' }
 
 const mapStateToProps = (state) => {
   return {
     message: state.message,
-    className: messageClassName(state.valid)
+    style: messageClassName(state.valid)
   }
 }
 
