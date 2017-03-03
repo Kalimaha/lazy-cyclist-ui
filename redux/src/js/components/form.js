@@ -1,6 +1,5 @@
 import React from 'react'
 import Field from './field'
-import ElevationPoints from './elevation_points'
 import RouteButton from './route_button'
 
 const Form = ({ from, to, updateFrom, updateTo, submitAction, valid }) => (
@@ -14,8 +13,6 @@ const Form = ({ from, to, updateFrom, updateTo, submitAction, valid }) => (
            placeholder="e.g. 511 Church St, Melbourne, Australia"
            defaultValue={to}
            onChange={updateTo} />
-    <br />
-    <ElevationPoints />
     <br />
     <RouteButton valid={valid} from={from} to={to} submitAction={submitAction} />
   </div>

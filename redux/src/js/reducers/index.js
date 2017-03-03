@@ -5,10 +5,6 @@ const initial_state = {
   message:      'Valid selection.',
   is_fetching:  false,
   routes:       []
-  // routes:       [
-  //   {points: 10, climbs: 1, totalDistance: 1, averageSlope: 1.2391111 },
-  //   {points: 105, climbs: 13, totalDistance: 14, averageSlope: 25 }
-  // ]
 }
 
 const UPDATE_FROM = 'UPDATE_FROM'

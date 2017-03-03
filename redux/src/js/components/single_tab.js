@@ -1,45 +1,24 @@
+/* global google */
 import React from 'react'
 
 const tab = (props) => (
-  <div>
-    <div>
-      <ul className="nav nav-tabs">
-        <li className="active"><a data-toggle="tab" href="#chart">
-          <i className="fa fa-area-chart"></i> Chart
-        </a></li>
-        <li><a data-toggle="tab" href="#map">
-          <i className="fa fa-map-o"></i> Map
-        </a></li>
-      </ul>
-      <div className="tab-content">
-        <div id="chart" className="tab-pane fade in active">
-          <div className="row">
-            <div className="col-lg-12">
-              <br />
-              <div ref={"chart_" + props.index}>
-                Your chart will appear here.
-              </div>
-            </div>
-          </div>
-        </div>
-        <div id="map" className="tab-pane fade">
-          <div className="row">
-            <div className="col-lg-12">
-              <br />
-              <div ref={"map_" + props.index}>
-                Your map will appear here.
-              </div>
-            </div>
-          </div>
-        </div>
+  <div className="row">
+    <div className="col-lg-6">
+      <div ref={"chart_" + props.index}>
+        Your chart will appear here.
       </div>
     </div>
-    <hr />
+    <div className="col-lg-6 text-center">
+      <div ref={"map_" + props.index} className="map">
+        Your map will appear here.
+      </div>
+    </div>
   </div>
 )
 
 const encode_points = (points) => points.map(p => [p.x, p.y])
-const encode_climb = (climb) => {
+
+const encode_climb  = (climb) => {
   const distance  = climb.end.x - climb.start.x
   var plot_band = {}
 
@@ -63,68 +42,54 @@ const encode_climb = (climb) => {
 
   return plot_band
 }
+
 const encode_climbs = (climbs) => climbs.map(climb => encode_climb(climb))
 
 const chart = (index, route) => {
   return {
-    chart: {
-    	type: 'areaspline',
-      zoomType: 'xy'
-    },
-    credits: {
-      enabled: false
-    },
-    legend: {
-      enabled: false
-    },
-    title: {
-      text: `Route #${1 + index}`,
-      x: -20
-    },
-    subtitle: {
-      text: `Total Distance: ${route.totalDistance}m<br>Average Slope: ${route.averageSlope.toFixed(2)}%.`,
-      x: -20
-    },
-    yAxis: {
-      gridLineWidth: 0,
-      title: {
-        text: 'Elevation [m]'
-      }
-    },
-    xAxis: {
-      plotBands: encode_climbs(route.climbs)
-    },
-    plotOptions: {
-      series: {
-        fillColor: '#009B77',
-        color: '#000'
-      },
-      areaspline: {
-        marker: {
-          enabled: false,
-          fillOpacity: 1,
-          enableMouseTracking: false
-        }
-      }
-    },
-    series: [{
-      data: encode_points(route.points)
-    }]
+    chart:        { type: 'areaspline', zoomType: 'xy' },
+    credits:      { enabled: false },
+    legend:       { enabled: false },
+    title:        { text: `Route #${1 + index}`, x: -20 },
+    subtitle:     { text: `Total Distance: ${route.totalDistance}m<br>Average Slope: ${route.averageSlope.toFixed(2)}%.`, x: -20 },
+    yAxis:        { gridLineWidth: 0, title: { text: 'Elevation [m]' } },
+    xAxis:        { plotBands: encode_climbs(route.climbs) },
+    series:       [{ data: encode_points(route.points) }],
+    plotOptions:  {
+      series: { fillColor: '#009B77', color: '#000' },
+      areaspline: { marker: { enabled: false, fillOpacity: 1, enableMouseTracking: false } }
+    }
   }
 }
 
-class SingleTab extends React.Component {
-  componentDidMount() {
-    const Highcharts = require('highcharts')
-    const chart_element = this.refs[`chart_${this.props.index}`]
-    const route = {
-      points:         this.props.points,
-      climbs:         this.props.climbs,
-      totalDistance:  this.props.totalDistance,
-      averageSlope:   this.props.averageSlope
-    }
+const render_map = (props, refs) => {
+  const map_element = refs[`map_${props.index}`]
+  // const center = props.points[parseInt(props.points.length / 2)]
 
-    Highcharts.chart(chart_element, chart(this.props.index, route))
+  new google.maps.Map(map_element, {
+    zoom: 3,
+    center: { lat: 0, lng: -180 },
+    mapTypeId: 'terrain'
+  });
+}
+
+const render_chart = (props, refs) => {
+  const Highcharts = require('highcharts')
+  const chart_element = refs[`chart_${props.index}`]
+  const route = {
+    points:         props.points,
+    climbs:         props.climbs,
+    totalDistance:  props.totalDistance,
+    averageSlope:   props.averageSlope
+  }
+
+  Highcharts.chart(chart_element, chart(props.index, route))
+}
+
+class SingleTab extends React.Component {
+  componentDidMount = () => {
+    render_chart(this.props, this.refs)
+    render_map(this.props, this.refs)
   }
 
   render() {
